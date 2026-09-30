@@ -1,0 +1,17 @@
+NEON BREACH / 霓虹突破 — Open-source acknowledgements
+
+Based on Zombie Orb Arena by Joshua Jacob Thomas.
+https://github.com/Jay-Jay-Tee/zombie-orb-arena
+Commit: 617fe11cc7c0015a328f0d8dbd479dc9a71e422f
+MIT license: ./zombie-orb-arena.txt
+
+Combat-feedback design reference: Echo Shooter by Bhanu Pratap Saini.
+https://github.com/bhanu2006-24/Echo-shooter
+Commit: 40e4674f7fc1d2639a5daff1d18d29ec36514573
+
+Mobile-input and buff-design reference: canvas-vampire-survivors.
+https://github.com/ricardo-foundry/canvas-vampire-survivors
+Commit: e616704889e57efc9c1f49098786a95c364008d3
+
+All graphics are drawn programmatically. Audio is synthesized locally.
+No remote fonts, images, or audio are required.

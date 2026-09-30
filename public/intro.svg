@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080" role="img" aria-label="霓虹突破开屏动画，时长五秒">
+<title>霓虹突破 · 五秒开屏动画</title>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07121e"/><stop offset=".52" stop-color="#0a202b"/><stop offset="1" stop-color="#07121e"/></linearGradient>
+ <radialGradient id="vignette"><stop offset=".24" stop-color="#06131e" stop-opacity="0"/><stop offset="1" stop-color="#030911" stop-opacity=".7"/></radialGradient>
+ <linearGradient id="slash" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#9effdc"/><stop offset=".55" stop-color="#43f5e2"/><stop offset="1" stop-color="#bdabff"/></linearGradient>
+ <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="15" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="32"/></filter>
+ <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse"><path d="M64 0H0V64" fill="none" stroke="#47dcca" stroke-opacity=".11" stroke-width="1"/><circle cx="0" cy="0" r="1.6" fill="#79ffe1" fill-opacity=".24"/></pattern>
+ <style><![CDATA[
+  .scan { animation: scan 1s cubic-bezier(.2,.8,.2,1) both; }
+  .ring { transform-box:fill-box; transform-origin:center; animation: bloom 1.45s cubic-bezier(.2,.8,.2,1) .36s both; }
+  .mark { transform-box:fill-box; transform-origin:center; animation: enter .72s cubic-bezier(.16,1,.3,1) .62s both; }
+  .word { animation: title .66s cubic-bezier(.16,1,.3,1) 1.12s both; }
+  .sub { animation: subtitle .6s ease-out 1.63s both; }
+  .hud { animation: hud .9s cubic-bezier(.2,.8,.2,1) 1.7s both; }
+  .flare { animation: flare .38s ease-out 3.62s both; }
+  @keyframes scan { from { transform:translate(-360px,185px); opacity:0 } 15% {opacity:1} to {transform:translate(960px,0);opacity:0} }
+  @keyframes bloom { 0% {transform:scale(.12);opacity:.95} 85% {opacity:.45} 100% {transform:scale(1.5);opacity:0} }
+  @keyframes enter { from {transform:scale(.77) translateY(15px);opacity:0;filter:blur(5px)} to {transform:scale(1) translateY(0);opacity:1;filter:blur(0)} }
+  @keyframes title { from {transform:translateX(34px);opacity:0;letter-spacing:20px} to {transform:translateX(0);opacity:1;letter-spacing:12px} }
+  @keyframes subtitle { from {transform:translateY(12px);opacity:0} to {transform:translateY(0);opacity:1} }
+  @keyframes hud { from {stroke-dashoffset:1000;opacity:0} to {stroke-dashoffset:0;opacity:.72} }
+  @keyframes flare { 0% {opacity:0} 40% {opacity:.22} 100% {opacity:0} }
+  @media (prefers-reduced-motion:reduce) { .scan,.ring,.mark,.word,.sub,.hud,.flare {animation-duration:.01ms!important;animation-delay:0ms!important} }
+ ]]></style>
+</defs>
+<!-- 深色竞技场网格 -->
+<rect width="1920" height="1080" fill="url(#bg)"/><rect width="1920" height="1080" fill="url(#grid)"/>
+<!-- 远处的青紫光晕 -->
+<ellipse cx="960" cy="552" rx="490" ry="220" fill="#20d8d3" opacity=".12" filter="url(#softGlow)"/>
+<!-- 横扫入场的能量线 -->
+<g class="scan" filter="url(#glow)"><path d="M-80 640L920 540" stroke="#b6fff0" stroke-width="5"/><path d="M-80 650L900 552" stroke="#27edd8" stroke-opacity=".7" stroke-width="18"/></g>
+<!-- 扩散冲击环 -->
+<circle class="ring" cx="960" cy="552" r="340" fill="none" stroke="#5bffe5" stroke-width="3" filter="url(#glow)"/>
+<!-- HUD角标，延伸竞技场主题 -->
+<g class="hud" fill="none" stroke="#75ffe4" stroke-width="2" stroke-dasharray="1000" stroke-dashoffset="1000">
+ <path d="M360 390V350H420M1560 390V350H1500M360 680V720H420M1560 680V720H1500"/>
+ <path d="M430 552h150m760 0h150M960 302v38m0 424v38" stroke-opacity=".38"/>
+ <circle cx="960" cy="552" r="400" stroke-opacity=".22" stroke-dasharray="8 18"/>
+</g>
+<!-- 游戏原有 N / 标识的动势化呈现 -->
+<g class="mark" filter="url(#glow)">
+ <path d="M565 620V484h22l76 91v-91h24v136h-22l-76-91v91z" fill="#a2ffdf"/>
+ <path d="M707 480l48 145" fill="none" stroke="url(#slash)" stroke-width="10" stroke-linecap="square"/>
+</g>
+<g class="word" font-family="Avenir Next,Arial,sans-serif" font-size="87" font-weight="700" fill="#efffff" text-anchor="middle">
+ <text x="1110" y="535" letter-spacing="12">NEON</text><text x="1110" y="630" letter-spacing="12">BREACH</text>
+</g>
+<g class="sub" text-anchor="middle" font-family="PingFang SC, Noto Sans CJK SC, sans-serif">
+ <text x="960" y="760" fill="#8fffe1" font-size="31" letter-spacing="14">霓 虹 突 破</text>
+ <text x="960" y="812" fill="#afc8d1" fill-opacity=".84" font-size="21" letter-spacing="5">每一局，都是新的突破</text>
+</g>
+<!-- 末尾短促闪光，标题停留至片尾 -->
+<rect class="flare" width="1920" height="1080" fill="#c8fff5"/>
+<rect width="1920" height="1080" fill="url(#vignette)"/>
+</svg>

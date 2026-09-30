@@ -1,0 +1,16 @@
+{
+  "name": "neon-breach-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build && node scripts/standalone.mjs",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --test test/*.test.js"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.8",
+    "vite": "^6.4.1"
+  }
+}

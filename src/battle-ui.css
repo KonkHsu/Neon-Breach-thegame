@@ -1,0 +1,352 @@
+/* Shared combat layout: fixed relationships, viewport-scaled touch targets. */
+#controls .actions {
+  --action-size: clamp(56px, 15vh, 80px);
+  --attack-size: clamp(76px, 21vh, 108px);
+  --action-gap: 10px;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: calc(
+    var(--attack-size) + var(--action-size) + 48px + 2 * var(--action-gap)
+  );
+  height: calc(2 * var(--action-size) + var(--action-gap));
+  min-width: 0;
+  display: block;
+}
+#controls .actions button {
+  opacity: 1;
+  background: rgba(8, 28, 36, 0.4);
+  backdrop-filter: none;
+  padding: 4px;
+  min-height: 48px;
+}
+#controls .actions button:disabled {
+  opacity: 0.68;
+}
+#controls .actions button:active {
+  background: rgba(71, 128, 134, 0.55);
+}
+#controls .actions .control-caption {
+  display: none;
+}
+#controls .actions .attack-wrap {
+  position: absolute;
+  right: 0;
+  bottom: calc(
+    (2 * var(--action-size) + var(--action-gap) - var(--attack-size)) / 2
+  );
+  margin: 0;
+}
+#controls .actions #attack {
+  width: var(--attack-size);
+  height: var(--attack-size);
+}
+#controls .actions #ultimate,
+#controls .actions .pulse-wrap {
+  position: absolute;
+  right: calc(var(--attack-size) + var(--action-gap));
+  bottom: calc(var(--action-size) + var(--action-gap));
+  width: var(--action-size);
+  height: var(--action-size);
+  margin: 0;
+}
+#controls .actions #pulse {
+  width: var(--action-size);
+  height: var(--action-size);
+  padding: 3px;
+}
+#controls .actions #ultimate {
+  border-radius: 50%;
+  overflow: hidden;
+}
+#controls .actions #ultimate-name {
+  font-size: 10px;
+}
+#controls .actions #ultimate-status {
+  font-size: 9px;
+}
+#controls .actions .pulse-glyph {
+  height: 22px;
+  line-height: 22px;
+  font-size: 22px;
+}
+#controls .actions .pulse-glyph .action-art {
+  width: 25px;
+  height: 25px;
+}
+#controls .actions #pulse-label {
+  font-size: 10px;
+}
+#controls .actions #dodge {
+  position: absolute;
+  right: calc(var(--attack-size) + var(--action-gap));
+  bottom: 0;
+  width: var(--action-size);
+  height: var(--action-size);
+  border-radius: 50%;
+  border: 1px solid #87d5f080;
+  color: #ccefff;
+  gap: 0;
+}
+#dodge::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #8ee4ff var(--dodge-progress, 360deg),
+    transparent 0
+  );
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), black 0);
+  pointer-events: none;
+}
+#dodge .dodge-glyph {
+  font: bold 22px/15px monospace;
+  transform: skewX(-12deg);
+}
+#dodge strong,
+#dodge .strong {
+  font-size: 11px;
+  line-height: 14px;
+}
+#dodge-status {
+  font: 9px/12px monospace;
+}
+#dodge kbd,
+#dodge .kbd {
+  position: absolute;
+  left: calc(100% + 3px);
+  bottom: 0;
+  margin: 0;
+  font-size: 8px;
+}
+#dodge.ready {
+  box-shadow: inset 0 0 12px #8ee4ff15;
+}
+#controls .actions #item,
+#controls .actions #item2 {
+  position: absolute;
+  right: calc(var(--attack-size) + var(--action-size) + 2 * var(--action-gap));
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  padding: 3px;
+  font-size: 9px;
+}
+#controls .actions #item {
+  bottom: calc(
+    var(--action-size) + var(--action-gap) + (var(--action-size) - 48px) / 2
+  );
+}
+#controls .actions #item2 {
+  bottom: calc((var(--action-size) - 48px) / 2);
+}
+#controls .actions #item-name,
+#controls .actions #item2-name {
+  font-size: 9px;
+}
+#controls .actions #item-ammo,
+#controls .actions #item2-ammo {
+  font-size: 9px;
+}
+#controls .reload-stack {
+  width: var(--attack-size);
+  bottom: calc(100% + 10px);
+  gap: 8px;
+}
+#controls .reload-stack #reload {
+  height: 50px;
+  min-height: 50px;
+  border-radius: 10px;
+  padding: 3px;
+}
+#controls .reload-stack #upgrade {
+  width: 56px;
+  height: 56px;
+  min-height: 56px;
+  padding: 3px;
+}
+#controls #upgrade.ready {
+  background: rgba(85, 62, 22, 0.4);
+}
+#controls #upgrade .upgrade-glyph {
+  font-size: 15px;
+  line-height: 13px;
+}
+#controls #upgrade-points {
+  font-size: 8px;
+  line-height: 10px;
+}
+#controls #reload-text {
+  font-size: 8px;
+}
+#controls #ammo {
+  font-size: 16px;
+}
+#controls #weapon-name {
+  font-size: 9px;
+}
+.playing #hud {
+  top: max(28px, env(safe-area-inset-top));
+}
+#hud .run-info {
+  padding-top: 55px;
+}
+#hud .vital {
+  width: clamp(145px, 21vw, 230px);
+}
+#buff-tags {
+  max-height: 46px;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+#remaining-enemies {
+  margin-top: 7px;
+  color: #d7eeeb;
+  font: 12px/16px monospace;
+}
+#boss-hud {
+  top: 82px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(32vw, 380px);
+}
+.tools #pause {
+  background: rgba(8, 28, 36, 0.4);
+}
+@media (pointer: coarse) {
+  #dodge kbd {
+    display: none;
+  }
+}
+@media (max-height: 360px) {
+  #hud .run-info {
+    gap: 14px;
+    padding-top: 47px;
+  }
+  #hud .run-info strong,
+  #hud .run-info .strong {
+    font-size: 14px;
+  }
+  #controls .actions {
+    bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  #buff-tags {
+    max-height: 30px;
+  }
+}
+
+.playing .topbar .brand {
+  visibility: hidden;
+}
+#controls .actions #ultimate {
+  left: auto;
+  top: auto;
+}
+#controls #upgrade-points {
+  width: 50px;
+  text-align: center;
+}
+#remaining-enemies {
+  position: absolute;
+  top: 112px;
+  margin-top: 0;
+}
+/* Reload text gets its own three rows, with a separate progress gutter. */
+#controls .actions {
+  --weapon-width: max(96px, var(--attack-size));
+  width: calc(var(--weapon-width) + var(--action-size) + 68px);
+}
+#controls .actions .attack-wrap {
+  right: calc((var(--weapon-width) - var(--attack-size)) / 2);
+}
+#controls .actions #ultimate,
+#controls .actions .pulse-wrap,
+#controls .actions #dodge {
+  right: calc(var(--weapon-width) + 10px);
+}
+#controls .actions #item,
+#controls .actions #item2 {
+  right: calc(var(--weapon-width) + var(--action-size) + 20px);
+}
+#controls .reload-stack {
+  width: var(--weapon-width);
+  bottom: calc(100% - 14px);
+}
+#controls .reload-stack #reload {
+  height: 64px;
+  min-height: 64px;
+  display: flex;
+  gap: 3px;
+  padding: 5px 4px 9px;
+  justify-content: center;
+}
+#controls #weapon-name {
+  font: 10px/12px monospace;
+}
+#controls #ammo {
+  font: 18px/20px monospace;
+}
+#controls #reload-text {
+  font: 9px/12px sans-serif;
+  white-space: nowrap;
+}
+#controls #reload-fill {
+  bottom: 3px;
+  left: 4px;
+  max-width: calc(100% - 8px);
+}
+#controls #ultimate .tar-action-art {
+  width: 24px;
+  height: 22px;
+  object-fit: contain;
+}
+
+#controls #ultimate .tar-action-art {
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 24px;
+  height: 24px;
+}
+
+#controls .actions #ultimate-status { display: block; width: calc(100% - 4px); font: 9px/12px monospace; white-space: nowrap; }
+
+/* Icon-only ultimate controls; retain energy bars and cooldown states. */
+#controls .actions #ultimate-name,
+#controls .actions #ultimate-status,
+#controls .actions #pulse-label,
+#controls .actions #pulse-key,
+#controls #pulse-wrap .control-caption { display: none; }
+#controls #ultimate .tar-action-art {
+  position: absolute; left: 18%; top: 18%; width: 64%; height: 64%;
+  object-fit: contain; pointer-events: none;
+}
+#controls .actions .pulse-glyph { width: 64%; height: 64%; line-height: 1; }
+#controls .actions .pulse-glyph .action-art { width: 100%; height: 100%; }
+
+#controls #pulse { background-image: linear-gradient(#8fefff, #8fefff); background-size: var(--pulse-ready, 100%) 3px; background-position: left bottom; background-repeat: no-repeat; }
+
+/* Energy rises behind the icon, clipped to the round control. */
+#controls .actions #ultimate,
+#controls .actions #pulse {
+  overflow: hidden;
+  background-image: linear-gradient(to bottom, #8fefff99 0px, #8fefff99 1px, #38dbeb55 2px, #13728d66 100%);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: 100% var(--energy-level, 0%);
+}
+#controls .actions #pulse { background-size: 100% var(--pulse-ready, 100%); }
+#controls #ultimate-fill { display: none; }
+#controls #ultimate .tar-action-art,
+#controls .actions .pulse-glyph { z-index: 1; }
+
+#announcement-dialog { width: min(540px, 88vw); max-height: 84dvh; box-sizing: border-box; }
+#announcement-dialog h2 { margin: 8px 0; }
+#announcement-dialog small { color: #8cacb0; }
+.announcement-body { max-height: 45dvh; overflow-y: auto; line-height: 1.7; text-align: left; }
+.announcement-body li { margin-bottom: 8px; }
+#announcement-dialog > button { margin-top: 12px; width: 100%; }
+
+#announcement-dialog { background: rgba(8, 21, 31, .96); color: #dcf7f5; border: 1px solid #5adcd580; border-radius: 16px; padding: 20px; box-shadow: 0 0 32px #24bfc020; }
+#announcement-dialog::backdrop { background: #02090dcc; }
+#announcement-dialog .announcement-body { font-size: 14px; }

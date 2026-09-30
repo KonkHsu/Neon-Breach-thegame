@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="theme-color" content="#080f19" />
+    <meta
+      name="description"
+      content="霓虹突破：短局俯视角射击游戏。移动、开火、释放冲击波，突破五波防线。"
+    />
+    <title>霓虹突破 · NEON BREACH</title>
+    <script type="module" crossorigin src="./assets/index-CfsOvMR7.js"></script>
+  </head>
+  <body>
+    <main id="app">
+      <canvas id="arena" aria-label="霓虹竞技场"></canvas>
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="霓虹突破"
+          ><span class="brand-mark">N<span> /</span></span
+          ><span>NEON BREACH<small>霓虹突破</small></span></a
+        >
+        <div class="tools">
+          <button id="pause" class="icon-button" hidden aria-label="暂停游戏">
+            Ⅱ <span>暂停</span>
+          </button>
+        </div>
+      </header>
+      <section id="hud" hidden aria-label="战斗信息">
+        <div class="vital">
+          <div class="micro">
+            生命 <strong id="hp-number">160 / 160</strong>
+          </div>
+          <div class="health-track"><div id="hp-fill"></div></div>
+          <div id="regen"></div>
+          <div id="frenzy" hidden></div>
+          <div id="buff-tags"></div>
+          <div id="remaining-enemies">剩余 0</div>
+        </div>
+        <div class="wave-info">
+          <span class="micro">当前波次</span
+          ><strong id="wave-number">01 <span>/ 05</span></strong>
+        </div>
+        <div class="run-info">
+          <div>
+            <span class="micro">消灭</span><strong id="kills">000</strong>
+          </div>
+          <div>
+            <span class="micro">用时</span><strong id="time">00:00</strong>
+          </div>
+        </div>
+      </section>
+      <div id="boss-hud" hidden>
+        <div>
+          <span id="boss-name">Ω &nbsp; 裂隙守卫</span
+          ><span id="boss-phase"></span>
+        </div>
+        <div class="boss-track"><i id="boss-fill"></i></div>
+      </div>
+      <div id="banner" hidden>
+        <span id="banner-small">防线突破</span
+        ><strong id="banner-title">第一波</strong>
+      </div>
+      <div id="controls" hidden>
+        <div id="move-zone" aria-label="左侧滑动移动"></div>
+        <div class="joystick-wrap">
+          <div id="joystick" aria-label="移动摇杆">
+            <div class="joy-cross"></div>
+            <div id="knob"></div>
+          </div>
+          <span class="control-caption">左侧滑动移动 <kbd>W A S D</kbd></span>
+        </div>
+        <div class="actions">
+          <button id="item" hidden aria-label="使用道具">
+            <span id="item-name"></span><strong id="item-ammo"></strong>
+          </button>
+          <button id="item2" hidden aria-label="使用第二槽道具">
+            <span id="item2-name"></span><strong id="item2-ammo"></strong>
+          </button>
+          <div class="reload-stack">
+            <button id="upgrade" hidden aria-label="购买强化">
+              <span class="upgrade-glyph" aria-hidden="true">↑</span>
+              <strong>强化</strong>
+              <small id="upgrade-points">0 / 100</small>
+              <kbd class="upgrade-key" aria-hidden="true">U</kbd>
+            </button>
+            <button id="reload" aria-label="换弹">
+              <small id="weapon-name">QBZ191</small
+              ><strong id="ammo">48 / 48</strong
+              ><span id="reload-text">换弹 R · 备弹 ∞</span
+              ><i id="reload-fill"></i>
+            </button>
+          </div>
+          <button id="ultimate" aria-label="释放大招">
+            <img id="tar-action-art" class="tar-action-art" hidden alt="" />
+            <span id="ultimate-name">弹射机器</span
+            ><strong id="ultimate-status">就绪 Q</strong
+            ><i id="ultimate-fill"></i>
+          </button>
+          <div class="pulse-wrap" id="pulse-wrap">
+            <button id="pulse" aria-label="释放冲击波">
+              <span class="pulse-glyph">◎</span
+              ><strong id="pulse-label">冲击波</strong
+              ><span id="pulse-key">E</span></button
+            ><span class="control-caption">范围清弹</span>
+          </div>
+          <button id="dodge" aria-label="闪避 Shift">
+            <span class="dodge-glyph">»</span><strong>闪避</strong
+            ><small id="dodge-status">就绪</small><kbd>Shift</kbd>
+          </button>
+          <div class="attack-wrap">
+            <button id="attack" aria-label="按住开火">
+              <span class="crosshair">⌖</span><strong id="attack-label">开火</strong></button
+            ><span id="attack-caption" class="control-caption">长按 <kbd>SPACE</kbd></span>
+          </div>
+        </div>
+      </div>
+      <section id="menu" class="overlay menu-overlay">
+        <div class="hero">
+          <h1>霓虹<span>突破</span><small>NEON BREACH</small></h1>
+        </div>
+        <div class="mode-picker" role="group" aria-label="选择游戏模式">
+          <button id="mode-campaign" aria-pressed="true">闯关模式</button>
+          <button id="mode-endless" aria-pressed="false">
+            无尽模式 <small class="recommended">推荐</small>
+          </button>
+          <button id="mode-tutorial" aria-pressed="false">教学</button>
+        </div>
+        <div class="menu-extras">
+          <button id="settings-open" class="secondary">设置</button>
+          <button id="announcement-open" class="secondary">更新公告</button>
+          <button id="codex-open" class="secondary">图鉴</button>
+        </div>
+        <div class="hero-actions">
+          <button id="start" class="primary">开始游戏</button>
+        </div>
+        <div hidden>
+          <button id="backpack">背包</button
+          ><button id="tutorial-start">教学关</button
+          ><span id="mode-hint"></span><span id="best-label"></span
+          ><strong id="best-score"></strong>
+        </div>
+      </section>
+      <dialog id="settings-dialog" aria-labelledby="settings-title">
+        <div class="backpack-heading">
+          <h2 id="settings-title">设置</h2>
+          <button id="settings-close" class="secondary">关闭</button>
+        </div>
+        <div class="settings-toggles">
+          <button id="sound" class="secondary">声音</button>
+          <button id="motion" class="secondary">震屏</button>
+          <button id="vibration" class="secondary">震动</button>
+          <button id="auto-fire" class="secondary">自动开火</button>
+        </div>
+        <p id="vibration-note"></p>
+        <details id="keyboard-help">
+          <summary>电脑键位说明</summary>
+          <dl class="key-guide">
+            <div>
+              <dt>Shift</dt>
+              <dd>闪避 · 每 2.5 秒可用</dd>
+            </div>
+            <div>
+              <dt>W A S D / 方向键</dt>
+              <dd>移动</dd>
+            </div>
+            <div>
+              <dt>空格 / 鼠标左键</dt>
+              <dd>按住开火</dd>
+            </div>
+            <div>
+              <dt>R</dt>
+              <dd>换弹</dd>
+            </div>
+            <div>
+              <dt>U</dt>
+              <dd>购买强化</dd>
+            </div>
+            <div>
+              <dt>E / Q</dt>
+              <dd>冲击波 / 已装备大招</dd>
+            </div>
+            <div>
+              <dt>F / G</dt>
+              <dd>使用第一 / 第二道具</dd>
+            </div>
+            <div>
+              <dt>Esc</dt>
+              <dd>暂停 / 继续，关闭弹窗</dd>
+            </div>
+          </dl>
+        </details>
+      </dialog>
+      <dialog id="start-dialog" aria-labelledby="start-title">
+        <div class="backpack-heading">
+          <h2 id="start-title">开始游戏</h2>
+          <button id="start-close" class="secondary">返回</button>
+        </div>
+        <p id="start-mode"></p>
+        <div class="start-options">
+          <button id="start-continue" class="secondary">
+            继续游戏<small id="start-save-info"></small></button
+          ><button id="start-new" class="primary">
+            新游戏<small>选择装备，开始新的挑战</small>
+          </button>
+        </div>
+      </dialog>
+      <dialog id="backpack-dialog" aria-labelledby="backpack-title">
+        <section class="loadout">
+          <div class="backpack-heading">
+            <h2 id="backpack-title">背包</h2>
+            <button id="backpack-close" aria-label="关闭背包">完成</button>
+          </div>
+          <div class="loadout-label">武器</div>
+          <div id="weapon-picker" role="group" aria-label="选择武器"></div>
+          <p id="weapon-detail"></p>
+          <div class="loadout-label">
+            技能 <small id="skill-rule">冷却后可再次释放</small>
+          </div>
+          <div id="ultimate-picker" role="group" aria-label="选择技能"></div>
+          <p id="ultimate-detail"></p>
+          <p id="loadout-note" role="status"></p>
+          <button id="loadout-launch" class="primary" hidden>开始游戏</button>
+        </section>
+      </dialog>
+      <section id="modal" class="overlay modal-overlay" hidden>
+        <div class="modal-card">
+          <div id="victory-art" hidden aria-hidden="true">
+            <span class="victory-emblem">✦</span><strong>VICTORY</strong>
+          </div>
+          <div id="modal-eyebrow" class="eyebrow"></div>
+          <h2 id="modal-title">战斗已暂停</h2>
+          <p id="modal-copy"></p>
+          <div id="result-stats"></div>
+          <div id="choices" class="choices"></div>
+          <div id="modal-actions">
+            <button id="resume" class="primary">继续战斗 <span>→</span></button
+            ><button id="challenge-endless" class="primary" hidden>
+              挑战无尽 <span>∞</span></button
+            ><button id="restart" class="secondary">重新开始</button
+            ><button id="pause-settings" class="secondary">设置</button
+            ><button id="home" class="text-button">返回主界面</button>
+          </div>
+        </div>
+      </section>
+      <div id="tutorial-bar" hidden>
+        <span id="tutorial-goal"></span
+        ><button id="tutorial-exit">退出教学</button>
+      </div>
+      <div id="event-toast" hidden></div>
+      <section id="station" class="overlay modal-overlay" hidden>
+        <div class="modal-card station-card">
+          <header>
+            <div>
+              <small>休整片刻，再出发</small>
+              <h2>补给站</h2>
+            </div>
+            <strong id="station-points"></strong>
+          </header>
+          <div class="station-loadout">
+            <span id="station-loadout"></span
+            ><button id="station-backpack" class="secondary">背包</button
+            ><button id="station-upgrade" class="secondary">强化</button>
+          </div>
+          <h3>点数商店</h3>
+          <div id="shop"></div>
+          <p id="station-item"></p>
+          <button id="station-continue" class="primary">继续挑战 →</button>
+        </div>
+      </section>
+      <dialog id="codex-dialog" aria-labelledby="codex-title">
+        <div class="codex-heading">
+          <h2 id="codex-title">图鉴</h2>
+          <button id="codex-close" class="secondary">关闭</button>
+        </div>
+        <nav id="codex-tabs" aria-label="图鉴分类"></nav>
+        <div id="codex-content"></div>
+      </dialog>
+      <div id="rotate" hidden>
+        <div class="rotate-icon">▯ ↻</div>
+        <h2>横过来，战场更开阔</h2>
+        <p>请将手机旋转至横屏，再继续战斗。</p>
+      </div>
+      <footer id="footer">
+        <a href="./licenses/NOTICE.txt" target="_blank" rel="noopener">鸣谢</a>
+      </footer>
+    </main>
+  </body>
+</html>

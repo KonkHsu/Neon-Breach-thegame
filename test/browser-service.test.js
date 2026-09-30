@@ -1,0 +1,24 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { BrowserService } from '../src/browser-service.js';
+import { Game } from '../src/combat.js';
+import { checkpoint, resultRecord } from '../src/endless-save.js';
+test('local checkpoint persists across service instances, completion prevents old saves', async () => {
+ const db = new Map();
+ globalThis.localStorage = { getItem:k=>db.get(k) ?? null, setItem:(k,v)=>db.set(k,v) };
+ const g = new Game(() => .5); g.reset('endless');
+ const save = checkpoint(g, 'offline-run', 1);
+ save.data.score = 123;
+ const service = new BrowserService();
+ await service.writeCheckpoint(save);
+ assert.equal((await new BrowserService().readCheckpoint()).data.score,123);
+ await service.finishCheckpoint('offline-run');
+ assert.equal(await service.readCheckpoint(),null);
+ await assert.rejects(service.writeCheckpoint(save),/已结束/);
+ const record = resultRecord(g, 'offline-run');
+ await service.writeRecord(record); await service.writeRecord(record);
+ assert.equal((await new BrowserService().readArchive()).recent.length,1);
+ globalThis.localStorage.setItem = () => { throw Error('quota'); };
+ await assert.rejects(service.writeRecord(record),/无法持久保存/);
+ delete globalThis.localStorage;
+});
